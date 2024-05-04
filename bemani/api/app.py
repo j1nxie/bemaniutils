@@ -91,7 +91,9 @@ def jsonify(func: Callable) -> Callable:
 
 @app.errorhandler(Exception)
 def server_exception(exception: Any) -> Response:
-    stack = "".join(traceback.format_exception(type(exception), exception, exception.__traceback__))
+    stack = "".join(
+        traceback.format_exception(type(exception), exception, exception.__traceback__)
+    )
     print(stack)
     try:
         g.data.local.network.put_event(
@@ -227,77 +229,75 @@ def lookup(protoversion: str, requestgame: str, requestversion: str) -> Dict[str
     else:
         omnimix = False
 
-    version = (
-        {
-            GameConstants.DDR: {
-                "12": VersionConstants.DDR_X2,
-                "13": VersionConstants.DDR_X3_VS_2NDMIX,
-                "14": VersionConstants.DDR_2013,
-                "15": VersionConstants.DDR_2014,
-                "16": VersionConstants.DDR_ACE,
-                "17": VersionConstants.DDR_A20,
-            },
-            GameConstants.IIDX: {
-                "20": VersionConstants.IIDX_TRICORO,
-                "21": VersionConstants.IIDX_SPADA,
-                "22": VersionConstants.IIDX_PENDUAL,
-                "23": VersionConstants.IIDX_COPULA,
-                "24": VersionConstants.IIDX_SINOBUZ,
-                "25": VersionConstants.IIDX_CANNON_BALLERS,
-                "26": VersionConstants.IIDX_ROOTAGE,
-                "27": VersionConstants.IIDX_HEROIC_VERSE,
-                "28": VersionConstants.IIDX_BISTROVER,
-            },
-            GameConstants.JUBEAT: {
-                "5": VersionConstants.JUBEAT_SAUCER,
-                "5a": VersionConstants.JUBEAT_SAUCER_FULFILL,
-                "6": VersionConstants.JUBEAT_PROP,
-                "7": VersionConstants.JUBEAT_QUBELL,
-                "8": VersionConstants.JUBEAT_CLAN,
-                "9": VersionConstants.JUBEAT_FESTO,
-                "10": VersionConstants.JUBEAT_AVENUE,
-            },
-            GameConstants.MUSECA: {
-                "1": VersionConstants.MUSECA,
-                "1p": VersionConstants.MUSECA_1_PLUS,
-            },
-            GameConstants.POPN_MUSIC: {
-                "19": VersionConstants.POPN_MUSIC_TUNE_STREET,
-                "20": VersionConstants.POPN_MUSIC_FANTASIA,
-                "21": VersionConstants.POPN_MUSIC_SUNNY_PARK,
-                "22": VersionConstants.POPN_MUSIC_LAPISTORIA,
-                "23": VersionConstants.POPN_MUSIC_ECLALE,
-                "24": VersionConstants.POPN_MUSIC_USANEKO,
-                "25": VersionConstants.POPN_MUSIC_PEACE,
-                "26": VersionConstants.POPN_MUSIC_KAIMEI_RIDDLES,
-            },
-            GameConstants.REFLEC_BEAT: {
-                "1": VersionConstants.REFLEC_BEAT,
-                "2": VersionConstants.REFLEC_BEAT_LIMELIGHT,
-                # We don't support non-final COLETTE, so just return scores for
-                # final colette to any network that asks.
-                "3w": VersionConstants.REFLEC_BEAT_COLETTE,
-                "3sp": VersionConstants.REFLEC_BEAT_COLETTE,
-                "3su": VersionConstants.REFLEC_BEAT_COLETTE,
-                "3a": VersionConstants.REFLEC_BEAT_COLETTE,
-                "3as": VersionConstants.REFLEC_BEAT_COLETTE,
-                # We don't support groovin'!!, so just return upper scores.
-                "4": VersionConstants.REFLEC_BEAT_GROOVIN,
-                "4u": VersionConstants.REFLEC_BEAT_GROOVIN,
-                "5": VersionConstants.REFLEC_BEAT_VOLZZA,
-                "5a": VersionConstants.REFLEC_BEAT_VOLZZA_2,
-                "6": VersionConstants.REFLEC_BEAT_REFLESIA,
-            },
-            GameConstants.SDVX: {
-                "1": VersionConstants.SDVX_BOOTH,
-                "2": VersionConstants.SDVX_INFINITE_INFECTION,
-                "3": VersionConstants.SDVX_GRAVITY_WARS,
-                "4": VersionConstants.SDVX_HEAVENLY_HAVEN,
-            },
-        }
-        .get(game, {})
-        .get(requestversion)
-    )
+    version = {
+        GameConstants.DDR: {
+            "12": VersionConstants.DDR_X2,
+            "13": VersionConstants.DDR_X3_VS_2NDMIX,
+            "14": VersionConstants.DDR_2013,
+            "15": VersionConstants.DDR_2014,
+            "16": VersionConstants.DDR_ACE,
+            "17": VersionConstants.DDR_A20,
+        },
+        GameConstants.IIDX: {
+            "20": VersionConstants.IIDX_TRICORO,
+            "21": VersionConstants.IIDX_SPADA,
+            "22": VersionConstants.IIDX_PENDUAL,
+            "23": VersionConstants.IIDX_COPULA,
+            "24": VersionConstants.IIDX_SINOBUZ,
+            "25": VersionConstants.IIDX_CANNON_BALLERS,
+            "26": VersionConstants.IIDX_ROOTAGE,
+            "27": VersionConstants.IIDX_HEROIC_VERSE,
+            "28": VersionConstants.IIDX_BISTROVER,
+        },
+        GameConstants.JUBEAT: {
+            "5": VersionConstants.JUBEAT_SAUCER,
+            "5a": VersionConstants.JUBEAT_SAUCER_FULFILL,
+            "6": VersionConstants.JUBEAT_PROP,
+            "7": VersionConstants.JUBEAT_QUBELL,
+            "8": VersionConstants.JUBEAT_CLAN,
+            "9": VersionConstants.JUBEAT_FESTO,
+            "10": VersionConstants.JUBEAT_AVENUE,
+        },
+        GameConstants.MUSECA: {
+            "1": VersionConstants.MUSECA,
+            "1p": VersionConstants.MUSECA_1_PLUS,
+        },
+        GameConstants.POPN_MUSIC: {
+            "19": VersionConstants.POPN_MUSIC_TUNE_STREET,
+            "20": VersionConstants.POPN_MUSIC_FANTASIA,
+            "21": VersionConstants.POPN_MUSIC_SUNNY_PARK,
+            "22": VersionConstants.POPN_MUSIC_LAPISTORIA,
+            "23": VersionConstants.POPN_MUSIC_ECLALE,
+            "24": VersionConstants.POPN_MUSIC_USANEKO,
+            "25": VersionConstants.POPN_MUSIC_PEACE,
+            "26": VersionConstants.POPN_MUSIC_KAIMEI_RIDDLES,
+        },
+        GameConstants.REFLEC_BEAT: {
+            "1": VersionConstants.REFLEC_BEAT,
+            "2": VersionConstants.REFLEC_BEAT_LIMELIGHT,
+            # We don't support non-final COLETTE, so just return scores for
+            # final colette to any network that asks.
+            "3w": VersionConstants.REFLEC_BEAT_COLETTE,
+            "3sp": VersionConstants.REFLEC_BEAT_COLETTE,
+            "3su": VersionConstants.REFLEC_BEAT_COLETTE,
+            "3a": VersionConstants.REFLEC_BEAT_COLETTE,
+            "3as": VersionConstants.REFLEC_BEAT_COLETTE,
+            # We don't support groovin'!!, so just return upper scores.
+            "4": VersionConstants.REFLEC_BEAT_GROOVIN,
+            "4u": VersionConstants.REFLEC_BEAT_GROOVIN,
+            "5": VersionConstants.REFLEC_BEAT_VOLZZA,
+            "5a": VersionConstants.REFLEC_BEAT_VOLZZA_2,
+            "6": VersionConstants.REFLEC_BEAT_REFLESIA,
+        },
+        GameConstants.SDVX: {
+            "1": VersionConstants.SDVX_BOOTH,
+            "2": VersionConstants.SDVX_INFINITE_INFECTION,
+            "3": VersionConstants.SDVX_GRAVITY_WARS,
+            "4": VersionConstants.SDVX_HEAVENLY_HAVEN,
+            "5": VersionConstants.SDVX_VIVID_WAVE,
+            "6": VersionConstants.SDVX_EXCEED_GEAR,
+        },
+    }.get(game, {}).get(requestversion)
     if version is None:
         # Don't support this version!
         abort(404)
